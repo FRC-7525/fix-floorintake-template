@@ -6,13 +6,17 @@ public class Timer {
     double startTime = 0;
     
     public void start() {
-        startTime = System.currentTimeMillis();
-        running = true;
+        if (!running) {
+            startTime = System.currentTimeMillis();
+            running = true;
+        }
     }
 
     public void stop() {
-        accumulatedTime += System.currentTimeMillis() - startTime;
-        running = false;
+        if (running) {
+            accumulatedTime += System.currentTimeMillis() - startTime;
+            running = false;
+        }
     }
 
     public void reset() {

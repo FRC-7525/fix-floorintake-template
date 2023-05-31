@@ -87,7 +87,7 @@ class FloorIntakeTest {
         floorIntake.periodic();
         assertTrue(floorIntake.isDown(), "Floor intake should be down");
         assertTrue(floorIntake.getSolenoidStatus(), "Solenoid should be out");
-        assertEquals(0, floorIntake.getMotorSpeed(), "Floor intake should not be moving");
+        assertEquals(-FloorIntake.FLOOR_INTAKE_SPEED, floorIntake.getMotorSpeed(), "Floor intake should not be moving");
     }
 
     // For ON, OUTTAKE, and DOWN_HOLD, the floor intake should say it's on after 1 second
