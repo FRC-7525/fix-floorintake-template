@@ -153,4 +153,28 @@ class FloorIntakeTest {
         floorIntake.periodic();
         assertFalse(floorIntake.isDown(), "Floor intake should immediately report not down");
     }
+    
+    // If the floor intake transitions while it's in the process of going down, 
+    // it shouldn't magically report it is down after the transition
+    @Test void transitionsWhileGoingDown() throws InterruptedException {
+        FloorIntake floorIntake = new FloorIntake();
+
+        floorIntake.setState(FloorIntakeStates.ON);
+        floorIntake.periodic();
+        assertFalse(floorIntake.isDown(), "Floor intake should not be down");
+
+        Thread.sleep(200);
+        floorIntake.periodic();
+        assertFalse(floorIntake.isDown(), "Floor intake should not be down yet");
+        
+        // Attempt transition -- shouldn't become down
+        floorIntake.setState(FloorIntakeStates.OUTTAKE);
+        floorIntake.periodic();
+        assertFalse(floorIntake.isDown(), "Floor intake should not be down yet");
+
+        // Finish going down
+        Thread.sleep(800);
+        floorIntake.periodic();
+        assertTrue(floorIntake.isDown(), "Floor intake should be down");
+    }
 }
